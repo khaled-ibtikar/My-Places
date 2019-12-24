@@ -1,27 +1,26 @@
-package com.example.roomwithaview.data
+package com.example.myplaces.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import kotlinx.coroutines.CoroutineScope
 
-@Database(entities = [Word::class], version = 1, exportSchema = false)
-public abstract class WordRoomDatabase : RoomDatabase() {
+@Database(entities = [Place::class], version = 1, exportSchema = false)
+abstract class PlaceDatabase : RoomDatabase() {
 
-    abstract fun wordDao(): WordDao
+    abstract fun placeDao(): PlaceDao
 
     companion object {
 
         // Singleton
         @Volatile
-        private var INSTANCE: WordRoomDatabase? = null
+        private var INSTANCE: PlaceDatabase? = null
 
         fun getDatabase(
             context: Context,
             scope: CoroutineScope
-        ): WordRoomDatabase {
+        ): PlaceDatabase {
             val tempInstance =
                 INSTANCE
             if (tempInstance != null) {
@@ -30,8 +29,8 @@ public abstract class WordRoomDatabase : RoomDatabase() {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    WordRoomDatabase::class.java,
-                    "word_database"
+                    PlaceDatabase::class.java,
+                    "place_database"
                 ).build()
                 INSTANCE = instance
                 return instance

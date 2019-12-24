@@ -1,4 +1,4 @@
-package com.example.roomwithaview
+package com.example.myplaces
 
 import org.junit.Test
 

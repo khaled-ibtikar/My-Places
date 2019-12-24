@@ -58,5 +58,8 @@ dependencies {
     // UI
     implementation "com.google.android.material:material:$rootProject.materialVersion"
 
+    //Google
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.libraries.places:places:2.1.0'
 
 }

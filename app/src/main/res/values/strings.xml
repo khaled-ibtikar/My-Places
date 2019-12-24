@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">RoomWithAView</string>
+    <string name="app_name">My Places</string>
     <string name="enter_data">Enter data</string>
     <string name="add">Add</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+AIzaSyBI42qZZXmI_WMtlAtahGuajztDDwWaSbM
+</string>
+
 </resources>
