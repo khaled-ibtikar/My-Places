@@ -8,7 +8,7 @@ class PlacesListRepository(private val placeDao: PlaceDao) {
 
     val allPlaces: LiveData<List<Place>> = placeDao.getPlaces()
 
-    suspend fun deletePlace(place: String) {
-        placeDao.deleteWord(place)
+    suspend fun deletePlace(placeName: String) {
+        placeDao.deletePlace(placeName)
     }
 }

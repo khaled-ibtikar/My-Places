@@ -25,54 +25,35 @@ class PlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var placeViewModel: PlaceViewModel
     private lateinit var mMap: GoogleMap
-    private  var selectedPlace: Place? = null
+
+    private var selectedPlace: Place? = null
     private var destination: LatLng? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        placeViewModel= ViewModelProvider(this).get(PlaceViewModel::class.java)
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
-        val apiKey = getString(R.string.google_maps_key)
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, apiKey)
-        }
-
-        addPlaceButton.setOnClickListener {
-            if(selectedPlace!=null) {
-                placeViewModel.insertPlace(
-                    com.example.myplaces.data.Place(
-                        selectedPlace!!.name!!,
-                        selectedPlace!!.latLng!!.toString()
-                    )
-                )
-                Toast.makeText(this,"Place Added Successfully!",Toast.LENGTH_SHORT).show()
-                this@PlaceActivity.finish()
-            }else
-                Toast.makeText(this,"Please select a place first!",Toast.LENGTH_SHORT).show()
-        }
-
+        initAutoCompleteFragment()
+        initSupportMapFragment()
+        initPlacesApi()
+        setListeners()
     }
 
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        //Check if a place was selected
         destination = intent.getParcelableExtra("destination")
-        if(destination!=null)
-        {
+        if (destination != null) {
             mMap.apply {
                 addMarker(MarkerOptions().position(destination!!))
 
@@ -83,6 +64,9 @@ class PlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                 animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
             }
         }
+    }
+
+    private fun initAutoCompleteFragment() {
         // Initialize the AutocompleteSupportFragment.
         val autocompleteFragment =
             supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
@@ -98,7 +82,7 @@ class PlaceActivity : AppCompatActivity(), OnMapReadyCallback {
             @Override
             override fun onPlaceSelected(place: Place) {
                 mMap.apply {
-                    selectedPlace=place
+                    selectedPlace = place
                     addMarker(MarkerOptions().position(place.latLng!!))
 
                     val cameraPosition = CameraPosition.Builder()
@@ -118,8 +102,37 @@ class PlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
-    companion object
+    private fun initSupportMapFragment() {
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+    }
 
-    val TAG = "Maps"
+    private fun initPlacesApi() {
+        val apiKey = getString(R.string.google_maps_key)
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, apiKey)
+        }
+    }
+
+    private fun setListeners() {
+        addPlaceButton.setOnClickListener {
+            if (selectedPlace != null) {
+                placeViewModel.insertPlace(
+                    com.example.myplaces.data.Place(
+                        selectedPlace!!.name!!,
+                        selectedPlace!!.latLng!!.toString()
+                    )
+                )
+                Toast.makeText(this, "Place Added Successfully!", Toast.LENGTH_SHORT).show()
+                this@PlaceActivity.finish()
+            } else
+                Toast.makeText(this, "Please select a place first!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    companion object
+    val TAG = "Map"
 }
 

@@ -15,6 +15,6 @@ interface PlaceDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPlace(place: Place)
 
-    @Query("DELETE FROM place_table WHERE place = :place")
-    suspend fun deleteWord(place: String)
+    @Query("DELETE FROM place_table WHERE place = :placeName")
+    suspend fun deletePlace(placeName: String)
 }

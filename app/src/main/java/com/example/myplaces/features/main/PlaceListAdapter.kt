@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myplaces.R
 import com.example.myplaces.data.Place
-import com.google.android.gms.maps.model.LatLng
+import com.example.myplaces.toLatLng
 
 class PlaceListAdapter internal constructor(
     context: Context,
@@ -30,26 +30,17 @@ class PlaceListAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val current = places[position]
-        holder.placeTextView.text = current.name
+        val currentPlace = places[position]
+        holder.placeTextView.text = currentPlace.name
         holder.deleteButton.setOnClickListener {
-            placesListViewModel.deletePlace(current.name)
+            placesListViewModel.deletePlace(currentPlace.name)
         }
         holder.placeTextView.setOnClickListener {
-            val latLng = current.destination.split('(', ')')[1].split(',')
-
-            placesListViewModel.navigateToPlace(
-                LatLng(
-                    latLng[0].toDouble(),
-                    latLng[1].toDouble()
-                )
-            )
+            placesListViewModel.navigateToPlace(currentPlace.destination.toLatLng())
         }
-
-
     }
 
-    internal fun setWords(places: List<Place>) {
+    internal fun setPlaces(places: List<Place>) {
         this.places = places
         notifyDataSetChanged()
     }

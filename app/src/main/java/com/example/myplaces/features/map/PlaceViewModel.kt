@@ -8,12 +8,10 @@ import com.example.myplaces.data.PlaceDatabase
 import kotlinx.coroutines.launch
 
 class PlaceViewModel(application: Application) : AndroidViewModel(application) {
-
     private val repository: PlaceRepository
 
     init {
-
-        val placeDao = PlaceDatabase.getDatabase(application,viewModelScope).placeDao()
+        val placeDao = PlaceDatabase.getDatabase(application).placeDao()
         repository = PlaceRepository(placeDao)
     }
 

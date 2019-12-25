@@ -11,22 +11,21 @@ import com.example.myplaces.features.map.PlaceActivity
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
-// Class extends AndroidViewModel and requires application as a parameter.
 class PlacesListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: PlacesListRepository
     val allPlaces: LiveData<List<Place>>
     var applicationContext : Application
-    init {
 
-        val wordsDao = PlaceDatabase.getDatabase(application,viewModelScope).placeDao()
-        repository = PlacesListRepository(wordsDao)
+    init {
+        val placeDao = PlaceDatabase.getDatabase(application).placeDao()
+        repository = PlacesListRepository(placeDao)
         allPlaces = repository.allPlaces
         applicationContext = application
     }
 
-    fun deletePlace(place: String) = viewModelScope.launch {
-        repository.deletePlace(place)
+    fun deletePlace(placeName: String) = viewModelScope.launch {
+        repository.deletePlace(placeName)
     }
 
     fun navigateToPlace(latLng: LatLng) {

@@ -16,8 +16,8 @@ class PlacesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         placesListViewModel = ViewModelProvider(this).get(PlacesListViewModel::class.java)
+
         initRecyclerView()
         setListeners()
     }
@@ -32,8 +32,8 @@ class PlacesListActivity : AppCompatActivity() {
         val adapter =
             PlaceListAdapter(this, placesListViewModel)
         recyclerView.adapter = adapter
-        placesListViewModel.allPlaces.observe(this, Observer { words ->
-            words?.let { adapter.setWords(it) }
+        placesListViewModel.allPlaces.observe(this, Observer { places ->
+            places?.let { adapter.setPlaces(it) }
         })
     }
 
