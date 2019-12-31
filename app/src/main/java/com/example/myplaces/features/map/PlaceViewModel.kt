@@ -2,6 +2,7 @@ package com.example.myplaces.features.map
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myplaces.data.Place
 import com.example.myplaces.data.PlaceDatabase

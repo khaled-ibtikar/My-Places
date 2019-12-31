@@ -1,6 +1,5 @@
 package com.example.myplaces.features.main
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myplaces.R
 import com.example.myplaces.data.Place
 import com.example.myplaces.toLatLng
+import com.google.android.gms.maps.model.LatLng
 
 class PlaceListAdapter internal constructor(
-    context: Context,
-    private val placesListViewModel: PlacesListViewModel
+    private val placesListViewModel: PlacesListViewModel,
+    val listener: (LatLng) -> Unit
 ) : RecyclerView.Adapter<PlaceListAdapter.PlaceViewHolder>() {
 
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
+
     private var places = emptyList<Place>()
 
     inner class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,6 +25,7 @@ class PlaceListAdapter internal constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
+        val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(R.layout.recyclerview_item, parent, false)
         return PlaceViewHolder(itemView)
     }
@@ -36,7 +37,7 @@ class PlaceListAdapter internal constructor(
             placesListViewModel.deletePlace(currentPlace.name)
         }
         holder.placeTextView.setOnClickListener {
-            placesListViewModel.navigateToPlace(currentPlace.destination.toLatLng())
+            listener(currentPlace.destination.toLatLng())
         }
     }
 

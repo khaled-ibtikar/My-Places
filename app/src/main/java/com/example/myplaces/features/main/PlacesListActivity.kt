@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myplaces.R
 import com.example.myplaces.features.map.PlaceActivity
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_main.*
 
 class PlacesListActivity : AppCompatActivity() {
@@ -24,17 +25,25 @@ class PlacesListActivity : AppCompatActivity() {
 
     private fun setListeners() {
         fab.setOnClickListener {
-            startActivity(Intent(this,PlaceActivity::class.java))
+            startActivity(Intent(this, PlaceActivity::class.java))
         }
     }
 
     private fun initRecyclerView() {
         val adapter =
-            PlaceListAdapter(this, placesListViewModel)
+            PlaceListAdapter(placesListViewModel) {latLan: LatLng ->
+                    navigateToPlace(latLan)
+            }
         recyclerView.adapter = adapter
         placesListViewModel.allPlaces.observe(this, Observer { places ->
             places?.let { adapter.setPlaces(it) }
         })
+    }
+
+    private fun navigateToPlace(latLng: LatLng) {
+        val intent = Intent(this, PlaceActivity::class.java)
+        intent.putExtra("destination", latLng)
+        this.startActivity(intent)
     }
 
 }

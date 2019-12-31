@@ -19,6 +19,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import kotlinx.android.synthetic.main.activity_maps.*
+import com.example.myplaces.data.Place as PlaceModel
 
 
 class PlaceActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -120,7 +121,7 @@ class PlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         addPlaceButton.setOnClickListener {
             if (selectedPlace != null) {
                 placeViewModel.insertPlace(
-                    com.example.myplaces.data.Place(
+                    PlaceModel  (
                         selectedPlace!!.name!!,
                         selectedPlace!!.latLng!!.toString()
                     )
